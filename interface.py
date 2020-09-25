@@ -1,37 +1,37 @@
 import tkinter as tk
 
 def main():
-  ##Lienzo
+  ##Canvas
   root = tk.Tk()
   root.title("Traductor de Ensamblador a Binario")
   root.geometry("1280x720")
 
-  ##Frame para el código
-  frameCodigo = tk.Frame(root)
-  frameCodigo.pack()
+  ##Code Frame
+  frameCode = tk.Frame(root)
+  frameCode.pack()
 
-  ##Entrada Ensamblador
-  codeLabel = tk.Label(frameCodigo, text="Código Ensamblador")
+  ##Assembly Input
+  codeLabel = tk.Label(frameCode, text="Código Ensamblador")
   codeLabel.grid(row=0, column=0)
 
-  codeInput = tk.Text(frameCodigo, width = 60, height = 30)
+  codeInput = tk.Text(frameCode, width = 60, height = 30)
   codeInput.grid(row=1, column=0)
 
-  ##Salida Binario
-  codeLabel1 = tk.Label(frameCodigo, text="Código Binario")
+  ##Binary Output
+  codeLabel1 = tk.Label(frameCode, text="Código Binario")
   codeLabel1.grid(row=0, column=1)
 
-  codeOutput = tk.Text(frameCodigo, width = 60, height = 30)
+  codeOutput = tk.Text(frameCode, width = 60, height = 30)
   codeOutput.grid(row=1, column=1)
 
-  ##Botones
-  frameBotones = tk.Frame(root)
-  frameBotones.pack()
+  ##Buttons
+  frameButtons = tk.Frame(root)
+  frameButtons.pack()
 
   def translateInput():
     codeOutput.delete(1.0, tk.END)
     #codeOutput.insert(tk.INSERT, codeInput.get(1.0, tk.END))
-    ##Una vez se obtiene el input lo que se procede es a traducir el código
+    ##Once we get the assembly code we proceed to translate it
 
     instructions = codeInput.get(1.0, tk.END)
 
@@ -41,11 +41,11 @@ def main():
     codeInput.delete(1.0, tk.END)
     codeOutput.delete(1.0, tk.END)
 
-  clearButton = tk.Button(frameBotones, text="Limpiar código", command = clearInput, bd = 5)
+  clearButton = tk.Button(frameButtons, text="Limpiar código", command = clearInput, bd = 5)
   clearButton.grid(row = 0, column = 0, pady = 5, padx=5)
 
-  loadButton = tk.Button(frameBotones, text="Traducir", command = translateInput, bd = 5)
+  loadButton = tk.Button(frameButtons, text="Traducir", command = translateInput, bd = 5)
   loadButton.grid(row=0, column = 1, pady = 5, padx = 5)
 
-  ##Llamado al lienzo
+  ##Canvas Call
   root.mainloop()
