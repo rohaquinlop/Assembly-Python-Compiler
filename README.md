@@ -1,3 +1,3 @@
 # Assembly-Python-Compiler
 
-Python Compiler that recibes Ensambly code and return its translation to binary
+Python Compiler that recibes Assembly code and return its translation to binary
