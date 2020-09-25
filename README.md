@@ -1,2 +1,2 @@
 # Ensambler-Python-Compiler
-Python Compiler that recibes MIPS code and return its translation to binary
+Python Compiler that recibes Ensambly code and return its translation to binary
