@@ -1,4 +1,5 @@
 import tkinter as tk
+import process as p
 
 def main():
   ##Canvas
@@ -34,6 +35,10 @@ def main():
     ##Once we get the assembly code we proceed to translate it
 
     instructions = codeInput.get(1.0, tk.END)
+
+    outputProcess = p.process(instructions)
+
+    codeOutput.insert(tk.INSERT, outputProcess)
 
     ##Logical Part
   
