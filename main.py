@@ -1,6 +1,5 @@
-import interface
-import lexer
-
+from Interface import interface
+from Logic import lexer
 
 def main():
   interface.main()
