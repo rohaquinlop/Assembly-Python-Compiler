@@ -1,3 +1,8 @@
+import sys
+sys.path.append("..")
+
+from Logic.Types import typeR as R
+
 def verify(instructions):
   ##Determine if input's correct
   instructions = instructions.strip().split("\n")
