@@ -15,7 +15,7 @@ def getFunctionCode(function):
   }
   return functionCode[function]
 
-def getOpCode(function):
+def getOpCode():
   return "000000"
 
 def isFunction(function):
