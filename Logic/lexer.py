@@ -68,7 +68,17 @@ def isRInstruction(instruction):
   else:
     return False
 
-def isAcceptable(instruction):
+def isIInstruction(instruction, tagsPos):
+  ##Validate if the instruction length is correct
+  n = len(instruction)
+  if n == 4 and instruction[0] != "lui":
+    ##
+  elif n == 3 and instruction[0] == "lui":
+    ##
+  else:
+    return False
+
+def isAcceptable(instruction, tagsPos):
   """
   Determine if a instruction is acceptable or not
   return True or False
