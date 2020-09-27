@@ -19,7 +19,7 @@ def parse(instructions):
 def isRInstruction(instruction):
   ##Validate if there is the correct length for the instruction
   n = len(instruction)
-  if n == 4:
+  if n == 4 and instruction[0] != "jr":
     ##Is a valid length
     for i in range(1, n):
       if i == 1 and instruction[i] == "$zero":
