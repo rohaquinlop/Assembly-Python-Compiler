@@ -16,6 +16,14 @@ def parse(instructions):
   instructions = list(map(lambda x : x.replace(",", " ").replace("(", " ").replace(")", " ").split(), instructions))
   return instructions
 
+def inmediateVerification(inmediate):
+  ##Auxiliar function that verifies if the inmediate is a dec or a hex
+  for i in inmediate:
+    if not(48 <= ord(i) <= 57 or ord(i) == 120 or ord(i) == 88):
+      ##If its true then the i char isn't a number or is different to "X" or "x"
+      return False
+  ##Then the inmediate is a decimal or a hex
+  return True
 def isRInstruction(instruction):
   ##Validate if there is the correct length for the instruction
   n = len(instruction)
