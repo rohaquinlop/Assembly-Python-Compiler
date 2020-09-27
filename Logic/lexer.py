@@ -35,6 +35,14 @@ def getTagsPos(instructions):
       if len(pattern) > 0:
         getTagsPos[ instruction[:len(instruction)-1] ] = PC
   return tagsPos
+
+def isTag(instruction):
+  pattern = re.findall("^[a-zA-Z]+:$", instruction)
+  if len(pattern) > 0:
+    return True
+  else:
+    return False
+
 def isRInstruction(instruction):
   ##Validate if there is the correct length for the instruction
   n = len(instruction)
