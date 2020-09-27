@@ -18,6 +18,7 @@ def parse(instructions):
 
 def isRInstruction(instruction):
   ##Validate if there is the correct length for the instruction
+  n = len(instruction)
   if n == 4:
     ##Is a valid length
     for i in range(1, n):
@@ -45,7 +46,6 @@ def isAcceptable(instruction):
   Determine if a instruction is acceptable or not
   return True or False
   """
-  n = len(instruction)
   if R.isFunction(instruction[0]):
     ##Is a type R instruction
     return isRInstruction(instruction)
