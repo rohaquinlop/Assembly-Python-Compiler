@@ -36,7 +36,7 @@ def getRegisterCode(register):
   return registerCode[register]
 
 def isReserved(register):
-  reserved = ["$k0", "$k1", "$zero"]
+  reserved = ["$k0", "$k1"]
   return register in reserved
 
 def isRegister(register):
