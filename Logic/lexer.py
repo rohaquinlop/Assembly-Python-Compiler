@@ -26,7 +26,7 @@ def isRInstruction(instruction):
         ## If we are trying to modify the register $zero then return False, it's not allowed
         return False
       else:
-        if !rgstr.isRegister(instruction[i]) or rgstr.isReserved(instruction[i]):
+        if not(rgstr.isRegister(instruction[i])) or rgstr.isReserved(instruction[i]):
           ##If it's not a valid register or it's a reserved register then return False, it's not allowed
           return False
     ##If finalizes all the process that means that the input was correct (Never returned False)
