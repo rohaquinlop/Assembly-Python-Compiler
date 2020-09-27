@@ -15,6 +15,9 @@ def getFunctionCode(function):
   }
   return functionCode[function]
 
+def getOpCode(function):
+  return "000000"
+
 def isFunction(function):
   functions = ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu", "sll", "srl", "jr"]
   return function in functions
