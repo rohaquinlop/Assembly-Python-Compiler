@@ -24,6 +24,17 @@ def inmediateVerification(inmediate):
       return False
   ##Then the inmediate is a decimal or a hex
   return True
+
+def getTagsPos(instructions):
+  tagsPos = dict()
+  PC = 0
+  for instruction in instructions:
+    PC += 4
+    if len(instruction) == 1:
+      pattern = re.findall("^[a-zA-Z]+:$", instruction)
+      if len(pattern) > 0:
+        getTagsPos[ instruction[:len(instruction)-1] ] = PC
+  return tagsPos
 def isRInstruction(instruction):
   ##Validate if there is the correct length for the instruction
   n = len(instruction)
