@@ -15,6 +15,6 @@ def getOpCode(op):
   return opCode[op]
 
 
-def isOp(op):
+def isOpCode(op):
   ops = ["beq", "bne", "addi", "addiu", "andi", "ori", "slti", "sltiu", "liu", "lw", "sw"]
   return op in ops
