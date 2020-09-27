@@ -88,6 +88,7 @@ def isAcceptable(instruction, tagsPos):
     return isRInstruction(instruction)
   elif I.isOpCode(instruction[0]):
     ##Is a type I instruction
+    return isIInstruction(instruction, tagsPos)
   elif J.isOpCode(instruction[0]):
     ##Is a type J instruction
   else:
@@ -102,6 +103,8 @@ def verify(instructions):
 
   ##Parsing input
   instructions = parse(instructions)
+
+  tagsPos = getTagsPos(instructions)
 
   for instruction in instructions:
     print(instruction)
