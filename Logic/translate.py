@@ -15,6 +15,7 @@ def convertInmediate(inmediate):
     res += "{0:05b}".format(int(inmediate[inmediate.find('X')+1:], 16))
   else:
     res += "{0:05b}".format(int(inmediate))
+  res = res.replace("-", "0")
   return res
 
 def convertInmediateIAux(inmediate):
@@ -25,6 +26,7 @@ def convertInmediateIAux(inmediate):
     res += "{0:016b}".format(int(inmediate[inmediate.find('X')+1:], 16))
   else:
     res += "{0:016b}".format(int(inmediate))
+  res = res.replace("-", "0")
   return res
 
 def convertInmediateI(inmediate):
@@ -35,6 +37,7 @@ def convertInmediateI(inmediate):
     res += "{0:016b}".format(int(inmediate[inmediate.find('X')+1:], 16)//4)
   else:
     res += "{0:016b}".format(int(inmediate)//4)
+  res = res.replace("-", "0")
   return res
 
 def convertInmediateJ(inmediate):
@@ -45,6 +48,7 @@ def convertInmediateJ(inmediate):
     res += "{0:026b}".format(int(inmediate[inmediate.find('X')+1:], 16)//4)
   else:
     res += "{0:026b}".format(int(inmediate)//4)
+  res = res.replace("-", "0")
   return res
 
 def getTranslationR(instruction):
