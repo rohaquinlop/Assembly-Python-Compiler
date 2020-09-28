@@ -39,9 +39,9 @@ def convertInmediateI(inmediate):
 
 def convertInmediateJ(inmediate):
   res = ""
-  if 'x' in inmediate:
+  if '0x' in inmediate:
     res += "{0:026b}".format(int(inmediate[inmediate.find('x')+1:], 16)//4)
-  elif 'X' in inmediate:
+  elif '0X' in inmediate:
     res += "{0:026b}".format(int(inmediate[inmediate.find('X')+1:], 16)//4)
   else:
     res += "{0:026b}".format(int(inmediate)//4)
@@ -89,7 +89,7 @@ def getTranslation(instruction, tagsPos, PC):
   elif J.isOpCode(instruction[0]):
     return getTranslationJ(instruction, tagsPos, PC)
   else:
-    return "\n"
+    return ""
 
 def translate(instructions):
   instructions = lx.parse(instructions)
