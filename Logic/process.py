@@ -1,7 +1,7 @@
 import sys
 sys.path.append("..")
 from Logic import lexer as lx
-from Logic import tranlate as tsl
+from Logic import translate as tsl
 
 def process(instructions):
   if lx.verify(instructions):
