@@ -3,5 +3,7 @@ sys.path.append("..")
 from Logic import lexer as lx
 
 def process(instructions):
-  lx.verify(instructions)
-  return 0
+  if lx.verify(instructions):
+    return "Se puede traducir"
+  else:
+    return "Error! no se cumplen los requirimientos de sintaxis!"
