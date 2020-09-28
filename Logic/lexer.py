@@ -22,7 +22,7 @@ def inmediateVerification(inmediate):
     return True
   else:
     for i in inmediate:
-      if not(48 <= ord(i) <= 57):
+      if not(48 <= ord(i) <= 57 or ord(i) == 45):
         ##If its true then the i char isn't a number or is different to "X" or "x"
         return False
     ##Then the inmediate is a decimal or a hex
