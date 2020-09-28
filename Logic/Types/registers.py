@@ -1,6 +1,7 @@
 def getRegisterCode(register):
   registerCode = {
     "$zero"   : "00000",
+    "$0"   : "00000",
     "$at"     : "00001",
     "$v0"     : "00010",
     "$v1"     : "00011",
@@ -40,7 +41,7 @@ def isReserved(register):
   return register in reserved
 
 def isRegister(register):
-  registers = ["$zero","$at","$v0","$v1","$a0","$a1","$a2","$a3","$t0","$t1","$t2","$t3","$t4","$t5","$t6","$t7",
+  registers = ["$zero", "$0", "$at","$v0","$v1","$a0","$a1","$a2","$a3","$t0","$t1","$t2","$t3","$t4","$t5","$t6","$t7",
                "$s0","$s1","$s2","$s3","$s4","$s5","$s6","$s7","$t8","$t9","$k0","$k1","$gp","$sp","$fp","$ra",]
 
   return register in registers
