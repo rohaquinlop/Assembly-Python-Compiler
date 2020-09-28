@@ -17,6 +17,18 @@ def convertInmediate(inmediate):
     res += "{0:05b}".format(inmediate)
   return res
 
+def getTranslationR(instruction):
+  if instruction[0] in ["sra", "sll", "srl"]:
+    return R.getOpCode(instruction[0]) + "00000" + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[1]) + convertInmediate(instruction[3])
+  elif instruction[0] in ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu"]:
+    return R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[3]) + rgstr.getRegisterCode(instruction[1]) + "00000" +R.getFunctionCode(instruction[0])
+  elif instruction[0] in ["div", "divu", "mult", "multu"]:
+    return R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[3]) + "00000" + "00000" + R.getFunctionCode(instruction[0])
+  elif instruction[0] == "jr":
+    return R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[1]) + "00000" + "00000" + "00000" + R.getFunctionCode(instruction[0])
+  elif instruction[0] in ["mfhi", "mflo"]:
+    return R.getOpCode(instruction[0]) + "00000" + "00000" + rgstr.getRegisterCode(instruction[1]) + "00000" + R.getFunctionCode(instruction[0])
+
 
 def translate(instructions):
   instructions = lx.parse(instructions)
