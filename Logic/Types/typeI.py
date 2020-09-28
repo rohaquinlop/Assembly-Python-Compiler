@@ -8,7 +8,7 @@ def getOpCode(op):
     "ori"    : "001101",
     "slti"   : "001010",
     "sltiu"  : "001011",
-    "liu"    : "001111",
+    "lui"    : "001111",
     "lw"     : "100011",
     "sw"     : "101011",
   }
@@ -16,5 +16,5 @@ def getOpCode(op):
 
 
 def isOpCode(op):
-  ops = ["beq", "bne", "addi", "addiu", "andi", "ori", "slti", "sltiu", "liu", "lw", "sw"]
+  ops = ["beq", "bne", "addi", "addiu", "andi", "ori", "slti", "sltiu", "lui", "lw", "sw"]
   return op in ops
