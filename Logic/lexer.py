@@ -154,7 +154,6 @@ def verify(instructions):
   tagsPos = getTagsPos(instructions)
 
   for instruction in instructions:
-    print(instruction)
-    print(isAcceptable(instruction, tagsPos))
-
+    if not(isAcceptable(instruction, tagsPos)):
+      return False
   return True
