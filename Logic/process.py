@@ -1,9 +1,10 @@
 import sys
 sys.path.append("..")
 from Logic import lexer as lx
+from Logic import tranlate as tsl
 
 def process(instructions):
   if lx.verify(instructions):
-    return "Se puede traducir"
+    return tsl.translate(instructions)
   else:
     return "Error! no se cumplen los requirimientos de sintaxis!"
