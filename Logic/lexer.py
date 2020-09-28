@@ -45,11 +45,11 @@ def isTag(instruction):
 def isRInstruction(instruction):
   ##Validate if there is the correct length for the instruction
   n = len(instruction)
-  if n == 4 and instruction[0] != "jr":
+  if n == 4:
     ##Is a valid length
-    if instruction[0] == "sra":
-      return (rgstr.isRegister(instruction[1]) and not(rgstr.isReserved(instruction[1])) and rgstr.isRegister(instruction[2]) and inmediateVerification(instruction[3]))
-    else:
+    if instruction[0] in ["sra", "sll", "srl"]:
+      return (rgstr.isRegister(instruction[1]) and instruction[1] != "$zero" and not(rgstr.isReserved(instruction[1])) and rgstr.isRegister(instruction[2]) and inmediateVerification(instruction[3]))
+    elif instruction[0] in ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu"]:
       for i in range(1, n):
         if i == 1 and instruction[i] == "$zero":
           ## If we are trying to modify the register $zero then return False, it's not allowed
@@ -60,19 +60,23 @@ def isRInstruction(instruction):
             return False
       ##If finalizes all the process that means that the input was correct (Never returned False)
       return True
+    else:
+      return False
   elif n == 3:
     if instruction[0] in ["div", "divu", "mult", "multu"]:
       ##Result is saved in HI and LO
       return rgstr.isRegister(instruction[1]) and rgstr.isRegister(instruction[2])
     elif instruction[0] == "mfc0":
-      return rgstr.isRegister(instruction[1])  and not(rgstr.isReserved(instruction[1])) and rgstr.isRegister(instruction[2])
+      return rgstr.isRegister(instruction[1])  and not(rgstr.isReserved(instruction[1])) and instruction[1] != "$zero" and rgstr.isRegister(instruction[2])
     else:
       return False
   elif n == 2:
     ##Is a valid length (jr)
-    if instruction[0] == "jr" and rgstr.isRegister(instruction[1]):
+    if instruction[0] == "jr":
       ##Means that the instruction is correct
-      return True
+      return rgstr.isRegister(instruction[1])
+    elif instruction[0] in ["mfhi", "mflo"]:
+      return rgstr.isRegister(instruction[1]) and not(rgstr.isReserved(instruction[1])) and instruction[1] != "$zero"
     else:
       return False
   else:
