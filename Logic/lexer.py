@@ -47,16 +47,19 @@ def isRInstruction(instruction):
   n = len(instruction)
   if n == 4 and instruction[0] != "jr":
     ##Is a valid length
-    for i in range(1, n):
-      if i == 1 and instruction[i] == "$zero":
-        ## If we are trying to modify the register $zero then return False, it's not allowed
-        return False
-      else:
-        if not(rgstr.isRegister(instruction[i])) or rgstr.isReserved(instruction[i]):
-          ##If it's not a valid register or it's a reserved register then return False, it's not allowed
+    if instruction[0] == "sra":
+      return (rgstr.isRegister(instruction[1]) and not(rgstr.isReserved(instruction[1])) and rgstr.isRegister(instruction[2]) and inmediateVerification(instruction[3]))
+    else:
+      for i in range(1, n):
+        if i == 1 and instruction[i] == "$zero":
+          ## If we are trying to modify the register $zero then return False, it's not allowed
           return False
-    ##If finalizes all the process that means that the input was correct (Never returned False)
-    return True
+        else:
+          if not(rgstr.isRegister(instruction[i])) or rgstr.isReserved(instruction[i]):
+            ##If it's not a valid register or it's a reserved register then return False, it's not allowed
+            return False
+      ##If finalizes all the process that means that the input was correct (Never returned False)
+      return True
   elif n == 3:
     if instruction[0] in ["div", "divu", "mult", "multu"]:
       ##Result is saved in HI and LO
