@@ -31,13 +31,12 @@ def getTagsPos(instructions):
   for instruction in instructions:
     PC += 4
     if len(instruction) == 1:
-      pattern = re.findall("^[a-zA-Z]+:$", instruction)
-      if len(pattern) > 0:
-        getTagsPos[ instruction[:len(instruction)-1] ] = PC
+      if isTag(instruction[0]):
+        tagsPos[ instruction[0][:len(instruction[0])-1] ] = PC
   return tagsPos
 
 def isTag(instruction):
-  pattern = re.findall("^[a-zA-Z]+:$", instruction)
+  pattern = re.findall("^[a-zA-Z]*:", instruction)
   if len(pattern) > 0:
     return True
   else:
@@ -110,6 +109,18 @@ def isIInstruction(instruction, tagsPos):
   else:
     return False
 
+def isJInstruction(instruction, tagsPos):
+  ##Validate if the instruction length is correct
+  n = len(instruction)
+  if n == 2:
+    if inmediateVerification(instruction[1]):
+      return False
+    else:
+      j = len(instruction[1])
+      return instruction[1] in tagsPos
+  else:
+    return False
+
 def isAcceptable(instruction, tagsPos):
   """
   Determine if a instruction is acceptable or not
@@ -123,10 +134,13 @@ def isAcceptable(instruction, tagsPos):
     return isIInstruction(instruction, tagsPos)
   elif J.isOpCode(instruction[0]):
     ##Is a type J instruction
-    return True
+    return isJInstruction(instruction, tagsPos)
   else:
-    ##It's a not valid case
-    return False
+    if not(isTag(instruction[0])):
+      ##It's a not valid case
+      return False
+    else:
+      return True
 
 def verify(instructions):
   """
@@ -136,10 +150,11 @@ def verify(instructions):
 
   ##Parsing input
   instructions = parse(instructions)
-
+  ##Getting all the tags
   tagsPos = getTagsPos(instructions)
 
   for instruction in instructions:
     print(instruction)
+    print(isAcceptable(instruction, tagsPos))
 
   return True
