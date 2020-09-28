@@ -18,12 +18,15 @@ def parse(instructions):
 
 def inmediateVerification(inmediate):
   ##Auxiliar function that verifies if the inmediate is a dec or a hex
-  for i in inmediate:
-    if not(48 <= ord(i) <= 57 or ord(i) == 120 or ord(i) == 88):
-      ##If its true then the i char isn't a number or is different to "X" or "x"
-      return False
-  ##Then the inmediate is a decimal or a hex
-  return True
+  if '0x' in inmediate or '0X' in inmediate:
+    return True
+  else:
+    for i in inmediate:
+      if not(48 <= ord(i) <= 57):
+        ##If its true then the i char isn't a number or is different to "X" or "x"
+        return False
+    ##Then the inmediate is a decimal or a hex
+    return True
 
 def getTagsPos(instructions):
   tagsPos = dict()
@@ -109,7 +112,6 @@ def isIInstruction(instruction, tagsPos):
         if inmediateVerification(instruction[3]):
           return True
         else:
-          j = len(instruction[3])
           return instruction[3] in tagsPos
       else:
         ##Only verify if it must jump to a PC number
