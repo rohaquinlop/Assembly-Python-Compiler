@@ -57,6 +57,14 @@ def isRInstruction(instruction):
           return False
     ##If finalizes all the process that means that the input was correct (Never returned False)
     return True
+  elif n == 3:
+    if instruction[0] in ["div", "divu", "mult", "multu"]:
+      ##Result is saved in HI and LO
+      return rgstr.isRegister(instruction[1]) and rgstr.isRegister(instruction[2])
+    elif instruction[0] == "mfc0":
+      return rgstr.isRegister(instruction[1])  and not(rgstr.isReserved(instruction[1])) and rgstr.isRegister(instruction[2])
+    else:
+      return False
   elif n == 2:
     ##Is a valid length (jr)
     if instruction[0] == "jr" and rgstr.isRegister(instruction[1]):
