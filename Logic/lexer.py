@@ -106,11 +106,11 @@ def isIInstruction(instruction, tagsPos):
       ##If finalizes all the process that means that we only need to verify if it's last field is a inmediate or is a valid tag
       if instruction[0] in ["beq", "bne"]:
         ##Verify if branch goes to a tag or to a PC number
-        if not(isTag(instruction[3])):
-          return inmediateVerification(instruction[3])
+        if inmediateVerification(instruction[3]):
+          return True
         else:
           j = len(instruction[3])
-          return instruction[3][:j-1] in tagsPos
+          return instruction[3] in tagsPos
       else:
         ##Only verify if it must jump to a PC number
         return inmediateVerification(instruction[3])
@@ -129,7 +129,7 @@ def isJInstruction(instruction, tagsPos):
   n = len(instruction)
   if n == 2:
     if inmediateVerification(instruction[1]):
-      return False
+      return True
     else:
       j = len(instruction[1])
       return instruction[1] in tagsPos
