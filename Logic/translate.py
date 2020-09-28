@@ -14,27 +14,90 @@ def convertInmediate(inmediate):
   elif 'X' in inmediate:
     res += "{0:05b}".format(int(inmediate[inmediate.find('X')+1:], 16))
   else:
-    res += "{0:05b}".format(inmediate)
+    res += "{0:05b}".format(int(inmediate))
+  return res
+
+def convertInmediateIAux(inmediate):
+  res = ""
+  if 'x' in inmediate:
+    res += "{0:016b}".format(int(inmediate[inmediate.find('x')+1:], 16))
+  elif 'X' in inmediate:
+    res += "{0:016b}".format(int(inmediate[inmediate.find('X')+1:], 16))
+  else:
+    res += "{0:016b}".format(int(inmediate))
+  return res
+
+def convertInmediateI(inmediate):
+  res = ""
+  if 'x' in inmediate:
+    res += "{0:016b}".format(int(inmediate[inmediate.find('x')+1:], 16)//4)
+  elif 'X' in inmediate:
+    res += "{0:016b}".format(int(inmediate[inmediate.find('X')+1:], 16)//4)
+  else:
+    res += "{0:016b}".format(int(inmediate)//4)
+  return res
+
+def convertInmediateJ(inmediate):
+  res = ""
+  if 'x' in inmediate:
+    res += "{0:026b}".format(int(inmediate[inmediate.find('x')+1:], 16)//4)
+  elif 'X' in inmediate:
+    res += "{0:026b}".format(int(inmediate[inmediate.find('X')+1:], 16)//4)
+  else:
+    res += "{0:026b}".format(int(inmediate)//4)
   return res
 
 def getTranslationR(instruction):
   if instruction[0] in ["sra", "sll", "srl"]:
-    return R.getOpCode(instruction[0]) + "00000" + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[1]) + convertInmediate(instruction[3])
+    return (R.getOpCode(instruction[0]) + "00000" + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[1]) + convertInmediate(instruction[3]))
   elif instruction[0] in ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu"]:
-    return R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[3]) + rgstr.getRegisterCode(instruction[1]) + "00000" +R.getFunctionCode(instruction[0])
+    return (R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[3]) + rgstr.getRegisterCode(instruction[1]) + "00000" + R.getFunctionCode(instruction[0]))
   elif instruction[0] in ["div", "divu", "mult", "multu"]:
-    return R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[3]) + "00000" + "00000" + R.getFunctionCode(instruction[0])
+    return (R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[3]) + "00000" + "00000" + R.getFunctionCode(instruction[0]))
   elif instruction[0] == "jr":
-    return R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[1]) + "00000" + "00000" + "00000" + R.getFunctionCode(instruction[0])
+    return (R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[1]) + "00000" + "00000" + "00000" + R.getFunctionCode(instruction[0]))
   elif instruction[0] in ["mfhi", "mflo"]:
-    return R.getOpCode(instruction[0]) + "00000" + "00000" + rgstr.getRegisterCode(instruction[1]) + "00000" + R.getFunctionCode(instruction[0])
+    return (R.getOpCode(instruction[0]) + "00000" + "00000" + rgstr.getRegisterCode(instruction[1]) + "00000" + R.getFunctionCode(instruction[0]))
 
+
+def getTranslationI(instruction, tagsPos, PC):
+  if instruction[0] in ["lw", "sw", "lbu", "lhu", "ll", "sb", "sc", "sh", "lwc1", "ldc1", "swc1", "sdc1"]:
+    return (I.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[3]) + rgstr.getRegisterCode(instruction[1]) + convertInmediateIAux(instruction[2]))
+  elif instruction[0] in ["addi", "addiu", "andi", "ori", "slti", "sltiu"]:
+    return (I.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[1]) + convertInmediateIAux(instruction[3]))
+  elif instruction[0] in ["beq", "bne"]:
+    if lx.inmediateVerification(instruction[3]):
+      return (I.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[1]) + rgstr.getRegisterCode(instruction[2]) + convertInmediateI(instruction[3]))
+    else:
+      j = len(instruction[3])
+      #return instruction[3][:j-1] in tagsPos
+      return (I.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[1]) + rgstr.getRegisterCode(instruction[2]) + convertInmediateI(str(tagsPos[instruction[3]] - PC)))
+  elif instruction[0] == "lui":
+    return (I.getOpCode(instruction[0]) + "00000" + rgstr.getRegisterCode(instruction[1]) + convertInmediateIAux(instruction[2]))
+
+def getTranslationJ(instruction, tagsPos, PC):
+  if lx.inmediateVerification(instruction[1]):
+    return (J.getOpCode(instruction[0]) + convertInmediateJ(instruction[1]))
+  else:
+    return (J.getOpCode(instruction[0]) + convertInmediateJ(str(tagsPos[instruction[1]])))
+
+def getTranslation(instruction, tagsPos, PC):
+  if R.isFunction(instruction[0]):
+    return getTranslationR(instruction)
+  elif I.isOpCode(instruction[0]):
+    return getTranslationI(instruction, tagsPos, PC)
+  elif J.isOpCode(instruction[0]):
+    return getTranslationJ(instruction, tagsPos, PC)
+  else:
+    return "\n"
 
 def translate(instructions):
   instructions = lx.parse(instructions)
   tagsPos = lx.getTagsPos(instructions)
 
   finalInstructions = ""
+  PC = 0
   for instruction in instructions:
-    finalInstructions += "{0}\n".format(getTranslation(instruction, tagsPos))
+    PC += 4
+    finalInstructions += "{0}\n".format(getTranslation(instruction, tagsPos, PC))
   return finalInstructions.strip()
