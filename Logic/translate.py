@@ -9,4 +9,10 @@ from Logic import lexer as lx
 
 
 def translate(instructions):
-  return 0
+  instructions = lx.parse(instructions)
+  tagsPos = lx.getTagsPos(instructions)
+
+  finalInstructions = ""
+  for instruction in instructions:
+    finalInstructions += "{0}\n".format(getTranslation(instruction, tagsPos))
+  return finalInstructions.strip()
