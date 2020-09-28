@@ -72,9 +72,42 @@ def isIInstruction(instruction, tagsPos):
   ##Validate if the instruction length is correct
   n = len(instruction)
   if n == 4 and instruction[0] != "lui":
-    ##
+    ##Verify if the instruction's fields are the corrects
+    if instruction[0] in ["lw", "sw"]:
+      ##Have inmediate in instruction[2] and all the conditions are respected
+      if rgstr.isRegister(instruction[1]) and not( rgstr.isReserved(instruction[1]) ) and instruction[1] != "$zero" and
+      inmediateVerification(instruction[2]) and rgstr.isRegister(instruction[2]):
+        return True
+      else:
+        return False
+    else:
+      ##Are the standard in the conditions
+      for i in range(1, n-1):
+        if i == 1 and instruction[i] == "$zero":
+          ## If we are trying to modify the register $zero then return False, it's not allowed
+          return False
+        else:
+          if not(rgstr.isRegister(instruction[i])) or rgstr.isReserved(instruction[i]):
+            ##If it's not a valid register or it's a reserved register then return False, it's not allowed
+            return False
+      ##If finalizes all the process that means that we only need to verify if it's last field is a inmediate or is a valid tag
+      if instruction[0] in ["beq", "bne"]:
+        ##Verify if branch goes to a tag or to a PC number
+        if not(isTag(instruction[3])):
+          return inmediateVerification(instruction[3])
+        else:
+          j = len(instruction[3])
+          return instruction[3][:j-1] in tagsPos
+      else:
+        ##Only verify if it must jump to a PC number
+        return inmediateVerification(instruction[3])
   elif n == 3 and instruction[0] == "lui":
-    ##
+    ##Verify if the fields for the lui are corrects
+    if instruction[1] != "$zero" and rgstr.isRegister(instruction[1]) and not(rgstr.isReserved(instruction[1])):
+      ##Verify if the inmediate valid
+      return inmediateVerification(instruction[2])
+    else:
+      return False
   else:
     return False
 
