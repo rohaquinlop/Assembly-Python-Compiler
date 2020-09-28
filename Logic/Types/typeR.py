@@ -49,5 +49,5 @@ def getOpCode(function):
   return opCode[function]
 
 def isFunction(function):
-  functions = ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu", "sll", "srl", "jr"]
+  functions = ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu", "sll", "srl", "jr", "div", "divu", "mfhi", "mflo", "mult", "multu", "sra", "mfc0"]
   return function in functions
