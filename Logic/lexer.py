@@ -75,8 +75,7 @@ def isIInstruction(instruction, tagsPos):
     ##Verify if the instruction's fields are the corrects
     if instruction[0] in ["lw", "sw"]:
       ##Have inmediate in instruction[2] and all the conditions are respected
-      if rgstr.isRegister(instruction[1]) and not( rgstr.isReserved(instruction[1]) ) and instruction[1] != "$zero" and
-      inmediateVerification(instruction[2]) and rgstr.isRegister(instruction[2]):
+      if rgstr.isRegister(instruction[1]) and not( rgstr.isReserved(instruction[1]) ) and instruction[1] != "$zero" and inmediateVerification(instruction[2]) and rgstr.isRegister(instruction[3]):
         return True
       else:
         return False
@@ -124,6 +123,7 @@ def isAcceptable(instruction, tagsPos):
     return isIInstruction(instruction, tagsPos)
   elif J.isOpCode(instruction[0]):
     ##Is a type J instruction
+    return True
   else:
     ##It's a not valid case
     return False
