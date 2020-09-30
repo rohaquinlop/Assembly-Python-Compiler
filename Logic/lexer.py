@@ -32,10 +32,11 @@ def getTagsPos(instructions):
   tagsPos = dict()
   PC = 0
   for instruction in instructions:
-    PC += 4
-    if len(instruction) == 1:
-      if isTag(instruction[0]):
-        tagsPos[ instruction[0][:len(instruction[0])-1] ] = PC
+    if len(instruction) > 0:
+      PC += 4
+      if len(instruction) == 1:
+        if isTag(instruction[0]):
+          tagsPos[ instruction[0][:len(instruction[0])-1] ] = PC
   return tagsPos
 
 def isTag(instruction):
@@ -171,6 +172,7 @@ def verify(instructions):
   tagsPos = getTagsPos(instructions)
 
   for instruction in instructions:
-    if not(isAcceptable(instruction, tagsPos)):
-      return False
+    if(len(instruction) > 0):
+      if not(isAcceptable(instruction, tagsPos)):
+        return False
   return True
