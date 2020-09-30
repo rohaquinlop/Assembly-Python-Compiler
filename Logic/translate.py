@@ -51,6 +51,17 @@ def convertInmediateJ(inmediate):
   res = res.replace("-", "0")
   return res
 
+def convertInmediateJAux(inmediate):
+  res = ""
+  if '0x' in inmediate:
+    res += "{0:026b}".format(int(inmediate[inmediate.find('x')+1:], 16))
+  elif '0X' in inmediate:
+    res += "{0:026b}".format(int(inmediate[inmediate.find('X')+1:], 16))
+  else:
+    res += "{0:026b}".format(int(inmediate))
+  res = res.replace("-", "0")
+  return res
+
 def getTranslationR(instruction):
   if instruction[0] in ["sra", "sll", "srl"]:
     return (R.getOpCode(instruction[0]) + "00000" + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[1]) + convertInmediate(instruction[3]))
@@ -81,7 +92,7 @@ def getTranslationI(instruction, tagsPos, PC):
 
 def getTranslationJ(instruction, tagsPos, PC):
   if lx.inmediateVerification(instruction[1]):
-    return (J.getOpCode(instruction[0]) + convertInmediateJ(instruction[1]))
+    return (J.getOpCode(instruction[0]) + convertInmediateJAux(instruction[1]))
   else:
     return (J.getOpCode(instruction[0]) + convertInmediateJ(str(tagsPos[instruction[1]])))
 
@@ -103,5 +114,7 @@ def translate(instructions):
   PC = 0
   for instruction in instructions:
     PC += 4
-    finalInstructions += "{0}\n".format(getTranslation(instruction, tagsPos, PC))
+    ans  = getTranslation(instruction, tagsPos, PC)
+    if len(ans) > 0:
+      finalInstructions += "{0}\n".format(ans)
   return finalInstructions.strip()
