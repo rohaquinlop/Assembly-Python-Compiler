@@ -1,6 +1,7 @@
 import sys
 sys.path.append("..")
 
+import tkinter.filedialog
 import tkinter as tk
 from Logic import process as p
 
@@ -32,6 +33,11 @@ def main():
   frameButtons = tk.Frame(root)
   frameButtons.pack()
 
+  def loadASMCode():
+    root.fileName = tk.filedialog.askopenfilename(filetypes=(("Assembly Code", ".ASM"), ("All files", "*.*")))
+    fileText = open(root.fileName).read()
+    codeInput.insert(1.0, fileText)
+
   def translateInput():
     codeOutput.delete(1.0, tk.END)
     #codeOutput.insert(tk.INSERT, codeInput.get(1.0, tk.END))
@@ -52,8 +58,11 @@ def main():
   clearButton = tk.Button(frameButtons, text="Limpiar código", command = clearInput, bd = 5)
   clearButton.grid(row = 0, column = 0, pady = 5, padx=5)
 
-  loadButton = tk.Button(frameButtons, text="Traducir", command = translateInput, bd = 5)
-  loadButton.grid(row=0, column = 1, pady = 5, padx = 5)
+  clearButton = tk.Button(frameButtons, text="Cargar archivo...", command = loadASMCode, bd = 5)
+  clearButton.grid(row = 0, column = 1, pady = 5, padx=5)
+
+  translateButton = tk.Button(frameButtons, text="Traducir", command = translateInput, bd = 5)
+  translateButton.grid(row=0, column = 2, pady = 5, padx = 5)
 
   ##Canvas Call
   root.mainloop()
