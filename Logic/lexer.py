@@ -33,10 +33,10 @@ def getTagsPos(instructions):
   PC = 0
   for instruction in instructions:
     if len(instruction) > 0:
-      PC += 4
       if len(instruction) == 1:
         if isTag(instruction[0]):
           tagsPos[ instruction[0][:len(instruction[0])-1] ] = PC
+      PC += 4
   return tagsPos
 
 def isTag(instruction):
