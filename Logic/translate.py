@@ -86,7 +86,7 @@ def getTranslationR(instruction):
   elif instruction[0] in ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu"]:
     return (R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[3]) + rgstr.getRegisterCode(instruction[1]) + "00000" + R.getFunctionCode(instruction[0]))
   elif instruction[0] in ["div", "divu", "mult", "multu"]:
-    return (R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[1]) + "00000" + "00000" + R.getFunctionCode(instruction[0]))
+    return (R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[1]) + rgstr.getRegisterCode(instruction[2]) + "00000" + "00000" + R.getFunctionCode(instruction[0]))
   elif instruction[0] == "jr":
     return (R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[1]) + "00000" + "00000" + "00000" + R.getFunctionCode(instruction[0]))
   elif instruction[0] in ["mfhi", "mflo"]:
