@@ -7,6 +7,9 @@ from Logic.Types import typeJ as J
 from Logic.Types import registers as rgstr
 from Logic import lexer as lx
 
+def twosComplement(num, n):
+  return (1<<n) + num
+
 def convertInmediate(inmediate):
   res = ""
   if 'x' in inmediate:
@@ -14,8 +17,11 @@ def convertInmediate(inmediate):
   elif 'X' in inmediate:
     res += "{0:05b}".format(int(inmediate[inmediate.find('X')+1:], 16))
   else:
-    res += "{0:05b}".format(int(inmediate))
-  res = res.replace("-", "0")
+    num = int(inmediate)
+    if num < 0:
+      num = twosComplement(num, 5)
+    res += "{0:05b}".format(num)
+  res = res.replace("-", "")
   return res
 
 def convertInmediateIAux(inmediate):
@@ -25,8 +31,11 @@ def convertInmediateIAux(inmediate):
   elif 'X' in inmediate:
     res += "{0:016b}".format(int(inmediate[inmediate.find('X')+1:], 16))
   else:
-    res += "{0:016b}".format(int(inmediate))
-  res = res.replace("-", "0")
+    num = int(inmediate)
+    if num < 0:
+      num = twosComplement(num, 16)
+    res += "{0:016b}".format(num)
+  res = res.replace("-", "")
   return res
 
 def convertInmediateI(inmediate):
@@ -36,8 +45,11 @@ def convertInmediateI(inmediate):
   elif 'X' in inmediate:
     res += "{0:016b}".format(int(inmediate[inmediate.find('X')+1:], 16)//4)
   else:
-    res += "{0:016b}".format(int(inmediate)//4)
-  res = res.replace("-", "0")
+    num = int(inmediate)
+    if num < 0:
+      num = twosComplement(num, 16)
+    res += "{0:016b}".format(num//4)
+  res = res.replace("-", "")
   return res
 
 def convertInmediateJ(inmediate):
@@ -47,8 +59,11 @@ def convertInmediateJ(inmediate):
   elif '0X' in inmediate:
     res += "{0:026b}".format(int(inmediate[inmediate.find('X')+1:], 16)//4)
   else:
-    res += "{0:026b}".format(int(inmediate)//4)
-  res = res.replace("-", "0")
+    num = int(inmediate)
+    if num < 0:
+      num = twosComplement(num, 26)
+    res += "{0:026b}".format(num//4)
+  res = res.replace("-", "")
   return res
 
 def convertInmediateJAux(inmediate):
@@ -58,13 +73,16 @@ def convertInmediateJAux(inmediate):
   elif '0X' in inmediate:
     res += "{0:026b}".format(int(inmediate[inmediate.find('X')+1:], 16))
   else:
-    res += "{0:026b}".format(int(inmediate))
-  res = res.replace("-", "0")
+    num = int(inmediate)
+    if num < 0:
+      num = twosComplement(num, 26)
+    res += "{0:026b}".format(num)
+  res = res.replace("-", "")
   return res
 
 def getTranslationR(instruction):
   if instruction[0] in ["sra", "sll", "srl"]:
-    return (R.getOpCode(instruction[0]) + "00000" + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[1]) + convertInmediate(instruction[3]))
+    return (R.getOpCode(instruction[0]) + "00000" + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[1]) + convertInmediate(instruction[3])) + R.getFunctionCode(instruction[0])
   elif instruction[0] in ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu"]:
     return (R.getOpCode(instruction[0]) + rgstr.getRegisterCode(instruction[2]) + rgstr.getRegisterCode(instruction[3]) + rgstr.getRegisterCode(instruction[1]) + "00000" + R.getFunctionCode(instruction[0]))
   elif instruction[0] in ["div", "divu", "mult", "multu"]:
