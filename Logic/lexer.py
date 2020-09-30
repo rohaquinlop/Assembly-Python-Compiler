@@ -40,7 +40,7 @@ def getTagsPos(instructions):
   return tagsPos
 
 def isTag(instruction):
-  pattern = re.findall("^[a-zA-Z]*:", instruction)
+  pattern = re.findall(".*:", instruction)
   if len(pattern) > 0:
     return True
   else:
